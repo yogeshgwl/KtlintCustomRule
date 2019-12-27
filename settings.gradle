@@ -1,0 +1,2 @@
+include ':app', ':customRule'
+rootProject.name='ktLintCustomRule'
