@@ -9,5 +9,12 @@ import com.github.shyiko.ktlint.core.RuleSetProvider
  */
 class CustomRuleSetProvider : RuleSetProvider {
     override fun get() =
-        RuleSet("custom-ktlint-rules", NoInternalImportRule(), ArgumentsRule(), LimitFunctions())
+        RuleSet(
+            "custom-ktlint-rules",
+            NoInternalImportRule(),
+            ArgumentsRule(),
+            LimitFunctions(),
+            LimitClassLines(),
+            LimitFunctionLines()
+        )
 }

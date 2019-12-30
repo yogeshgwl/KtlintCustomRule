@@ -4,7 +4,6 @@ import com.github.shyiko.ktlint.core.Rule
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
-import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
 import org.jetbrains.kotlin.utils.addToStdlib.flattenTo
@@ -16,8 +15,9 @@ import kotlin.collections.HashSet
  */
 class LimitClassLines : Rule("limit-class-rule") {
     companion object {
-        const val MAX_LIMIT: Int = 20
+        const val MAX_LIMIT: Int = 250
     }
+
     private val classToLinesCache = IdentityHashMap<KtClassOrObject, Int>()
     private val nestedClassTracking = IdentityHashMap<KtClassOrObject, HashSet<KtClassOrObject>>()
 
@@ -26,18 +26,24 @@ class LimitClassLines : Rule("limit-class-rule") {
         autoCorrect: Boolean,
         emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
     ) {
-       /* if (node.elementType == KtStubElementTypes.CLASS) {
+        if (node.elementType == KtStubElementTypes.CLASS) {
             val importDirective = node.psi as KtClass
-            if (calcFunctions(importDirective) > MAX_LIMIT)
-                emit(
-                    node.startOffset,
-                    "Class ${importDirective.name} should not use more than ${ArgumentsRule.MAX_LIMIT} functions.",
-                    false
-                )
-        }*/
+            calcFunctions(importDirective)
+            for ((clazz, lines) in classToLinesCache) {
+                if (lines >= MAX_LIMIT) {
+                    emit(
+                        node.startOffset,
+                        "Class ${importDirective.name} should not use more than lines $MAX_LIMIT lines.",
+                        false
+                    )
+                }
+            }
+        }
     }
 
     private fun calcFunctions(classOrObject: KtClassOrObject) {
+        classToLinesCache.clear()
+        nestedClassTracking.clear()
         val lines = classOrObject.linesOfCode()
         classToLinesCache[classOrObject] = lines
         classOrObject.getStrictParentOfType<KtClassOrObject>()
@@ -48,12 +54,14 @@ class LimitClassLines : Rule("limit-class-rule") {
             ?.let { classToLinesCache[classOrObject] = lines - it }
     }
 
-    private fun findAllNestedClasses(startClass: KtClassOrObject): Sequence<KtClassOrObject> = sequence {
-        var nestedClasses = nestedClassTracking[startClass]
-        while (!nestedClasses.isNullOrEmpty()) {
-            yieldAll(nestedClasses)
-            nestedClasses = nestedClasses.mapNotNull { nestedClassTracking[it] }.flattenTo(HashSet())
+    private fun findAllNestedClasses(startClass: KtClassOrObject): Sequence<KtClassOrObject> =
+        sequence {
+            var nestedClasses = nestedClassTracking[startClass]
+            while (!nestedClasses.isNullOrEmpty()) {
+                yieldAll(nestedClasses)
+                nestedClasses =
+                    nestedClasses.mapNotNull { nestedClassTracking[it] }.flattenTo(HashSet())
+            }
         }
-    }
 
 }

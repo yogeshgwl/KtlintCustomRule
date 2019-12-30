@@ -22,7 +22,7 @@ class ArgumentsRule : Rule("argument-limit-rule") {
         if (node.elementType == KtStubElementTypes.FUNCTION) {
             val importDirective = node.psi as KtNamedFunction
             if (importDirective.valueParameters.size > MAX_LIMIT)
-                emit(node.startOffset, "function ${importDirective.name} should use only $MAX_LIMIT arguments.", false)
+                emit(node.startOffset, "Function ${importDirective.name} should use only $MAX_LIMIT arguments.", false)
         }
     }
 }
