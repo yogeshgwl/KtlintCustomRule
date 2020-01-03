@@ -30,7 +30,7 @@ class LimitClassLines : Rule("limit-class-rule") {
             val importDirective = node.psi as KtClass
             calcFunctions(importDirective)
             for ((clazz, lines) in classToLinesCache) {
-                if (lines >= MAX_LIMIT) {
+                if (lines > MAX_LIMIT) {
                     emit(
                         node.startOffset,
                         "Class ${importDirective.name} contains $lines,this should not use more than lines $MAX_LIMIT lines.",
