@@ -14,6 +14,7 @@ class LimitFunctions : Rule("limit-function-rule") {
     companion object {
         const val MAX_LIMIT: Int = 20
     }
+
     override fun visit(
         node: ASTNode,
         autoCorrect: Boolean,
@@ -21,8 +22,13 @@ class LimitFunctions : Rule("limit-function-rule") {
     ) {
         if (node.elementType == KtStubElementTypes.CLASS) {
             val importDirective = node.psi as KtClass
-            if (calcFunctions(importDirective) > MAX_LIMIT)
-                emit(node.startOffset, "Class ${importDirective.name} should not use more than $MAX_LIMIT functions.", false)
+            val value = calcFunctions(importDirective)
+            if (value > MAX_LIMIT)
+                emit(
+                    node.startOffset,
+                    "Class ${importDirective.name} contains $value,this should not use more than $MAX_LIMIT functions.",
+                    false
+                )
         }
     }
 

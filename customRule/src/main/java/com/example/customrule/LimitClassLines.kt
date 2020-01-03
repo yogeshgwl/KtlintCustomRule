@@ -33,7 +33,7 @@ class LimitClassLines : Rule("limit-class-rule") {
                 if (lines >= MAX_LIMIT) {
                     emit(
                         node.startOffset,
-                        "Class ${importDirective.name} should not use more than lines $MAX_LIMIT lines.",
+                        "Class ${importDirective.name} contains $lines,this should not use more than lines $MAX_LIMIT lines.",
                         false
                     )
                 }

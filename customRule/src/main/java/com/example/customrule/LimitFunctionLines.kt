@@ -33,7 +33,7 @@ class LimitFunctionLines : Rule("limit-method-rule") {
                 if (lines >= MAX_LIMIT) {
                     emit(
                         node.startOffset,
-                        "Function ${importDirective.name} should not use more than $MAX_LIMIT lines.",
+                        "Function ${importDirective.name} contains $lines,this should not use more than $MAX_LIMIT lines.",
                         false
                     )
                 }
