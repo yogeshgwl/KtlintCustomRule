@@ -11,15 +11,10 @@ import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl
 import org.jetbrains.kotlin.diagnostics.DiagnosticUtils
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.kdoc.psi.api.KDocElement
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocElementImpl
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocImpl
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocLink
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocName
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocSection
-import org.jetbrains.kotlin.kdoc.psi.impl.KDocTag
+import org.jetbrains.kotlin.kdoc.psi.impl.*
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
-import java.util.ArrayDeque
+import java.util.*
 
 fun ASTNode.tokenSequence(skipTreesOf: Set<Class<out PsiElement>>): Sequence<ASTNode> = sequence {
     val queue = ArrayDeque<ASTNode>()
@@ -37,25 +32,27 @@ fun ASTNode.tokenSequence(skipTreesOf: Set<Class<out PsiElement>>): Sequence<AST
     } while (queue.isNotEmpty())
 }
 
-fun KtElement.linesOfCode(inFile: KtFile = this.containingKtFile): Int = node.tokenSequence(comments)
+fun KtElement.linesOfCode(inFile: KtFile = this.containingKtFile): Int =
+    node.tokenSequence(comments)
         .map { it.line(inFile) }
         .distinct()
         .count()
 
-fun ASTNode.line(inFile: KtFile) = DiagnosticUtils.getLineAndColumnInPsiFile(inFile, this.textRange).line
+fun ASTNode.line(inFile: KtFile) =
+    DiagnosticUtils.getLineAndColumnInPsiFile(inFile, this.textRange).line
 
 private val comments: Set<Class<out PsiElement>> = setOf(
-        PsiWhiteSpace::class.java,
-        PsiWhiteSpaceImpl::class.java,
-        PsiComment::class.java,
-        PsiCommentImpl::class.java,
-        PsiCoreCommentImpl::class.java,
-        KDoc::class.java,
-        KDocImpl::class.java,
-        KDocElementImpl::class.java,
-        KDocElement::class.java,
-        KDocLink::class.java,
-        KDocSection::class.java,
-        KDocTag::class.java,
-        KDocName::class.java
+    PsiWhiteSpace::class.java,
+    PsiWhiteSpaceImpl::class.java,
+    PsiComment::class.java,
+    PsiCommentImpl::class.java,
+    PsiCoreCommentImpl::class.java,
+    KDoc::class.java,
+    KDocImpl::class.java,
+    KDocElementImpl::class.java,
+    KDocElement::class.java,
+    KDocLink::class.java,
+    KDocSection::class.java,
+    KDocTag::class.java,
+    KDocName::class.java
 )
