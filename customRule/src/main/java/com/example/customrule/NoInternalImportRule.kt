@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
 
-// * Created on 27/12/19.
 /**
  * @author GWL
  */

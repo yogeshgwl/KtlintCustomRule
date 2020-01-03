@@ -2,8 +2,6 @@ package com.example.customrule
 
 import com.github.shyiko.ktlint.core.Rule
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
-import org.jetbrains.kotlin.psi.KtClass
-import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.getStrictParentOfType
 import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes
@@ -20,7 +18,8 @@ class LimitFunctionLines : Rule("limit-method-rule") {
     }
 
     private val functionToLinesCache = HashMap<KtNamedFunction, Int>()
-    private val nestedFunctionTracking = IdentityHashMap<KtNamedFunction, HashSet<KtNamedFunction>>()
+    private val nestedFunctionTracking =
+        IdentityHashMap<KtNamedFunction, HashSet<KtNamedFunction>>()
 
     override fun visit(
         node: ASTNode,
@@ -55,12 +54,13 @@ class LimitFunctionLines : Rule("limit-method-rule") {
             ?.let { functionToLinesCache[function] = lines - it }
     }
 
-    private fun findAllNestedFunctions(startFunction: KtNamedFunction): Sequence<KtNamedFunction> = sequence {
-        var nestedFunctions = nestedFunctionTracking[startFunction]
-        while (!nestedFunctions.isNullOrEmpty()) {
-            yieldAll(nestedFunctions)
-            nestedFunctions = nestedFunctions.mapNotNull { nestedFunctionTracking[it] }.flattenTo(HashSet())
+    private fun findAllNestedFunctions(startFunction: KtNamedFunction): Sequence<KtNamedFunction> =
+        sequence {
+            var nestedFunctions = nestedFunctionTracking[startFunction]
+            while (!nestedFunctions.isNullOrEmpty()) {
+                yieldAll(nestedFunctions)
+                nestedFunctions =
+                    nestedFunctions.mapNotNull { nestedFunctionTracking[it] }.flattenTo(HashSet())
+            }
         }
-    }
-
 }

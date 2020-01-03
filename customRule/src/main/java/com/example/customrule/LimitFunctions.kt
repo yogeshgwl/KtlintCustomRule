@@ -22,7 +22,7 @@ class LimitFunctions : Rule("limit-function-rule") {
         if (node.elementType == KtStubElementTypes.CLASS) {
             val importDirective = node.psi as KtClass
             if (calcFunctions(importDirective) > MAX_LIMIT)
-                emit(node.startOffset, "Class ${importDirective.name} should not use more than ${ArgumentsRule.MAX_LIMIT} functions.", false)
+                emit(node.startOffset, "Class ${importDirective.name} should not use more than $MAX_LIMIT functions.", false)
         }
     }
 
