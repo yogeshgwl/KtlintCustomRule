@@ -1,2 +1,2 @@
-include ':app', ':customRule',':ktlint-core'
+include ':app', ':customRule'
 rootProject.name='ktLintCustomRule'

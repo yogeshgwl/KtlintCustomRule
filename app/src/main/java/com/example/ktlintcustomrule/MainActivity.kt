@@ -1,20 +1,24 @@
 package com.example.ktlintcustomrule
 
 import android.os.Bundle
-import android.widget.*
-import androidx.appcompat.app.*
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    val button :Button?=null
+    val button: Button? = null
     var tetst = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addd(2, 3, 4, 5, 5,6,6)
+        addd(2, 3, 4, 5, 5, 6, 6)
     }
 
-    fun addd(x: Int, y: Int, z: Int, a: Int, b: Int, c: Int, d: Int) {
+    fun addd(
+        x: Int,
+        y: Int, z: Int,
+        a: Int, b: Int, c: Int, d: Int
+    ) {
         x + y
         x + z
         x + a

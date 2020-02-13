@@ -9,7 +9,9 @@ configurations {
     ktlint
 }
 dependencies {
-    implementation project(":ktlint-core")
+    implementation "com.pinterest.ktlint:ktlint-core:0.36.0"
+
+    //implementation project(":ktlint-core")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //compileOnly "com.pinterest:ktlint:0.36.0"
     //testImplementation "com.pinterest:ktlint-core:0.36.0"
