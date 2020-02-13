@@ -2,7 +2,7 @@ package com.example.ktlintcustomrule
 
 import android.os.Bundle
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.*
 
 class MainActivity : AppCompatActivity() {
 
